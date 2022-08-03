@@ -6,6 +6,7 @@ const cors = require("cors");
 
 const userRouter = require("./src/routers/user");
 const postRouter = require("./src/routers/content")
+const commentRouter = require("./src/routers/commented")
 
 app.use(cors());
 app.use(bearerToken());
@@ -13,6 +14,7 @@ app.use("/public", express.static("public"));
 app.use(express.json());
 app.use("/users", userRouter);
 app.use("/posts", postRouter);
+app.use("/comments", commentRouter)
 
 
 // error handler
