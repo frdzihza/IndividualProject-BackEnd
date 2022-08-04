@@ -41,18 +41,23 @@ const registerUserController = async (req, res, next) => {
     
     const checkUser = await User.findOne({email})
     if(checkUser){
-      if(checkUser.username == username){
-        throw{
-          code: 400,
-          message: "Username already exist"
-        }
-      } else {
+     if(checkUser.email == email){
         throw{
           code: 400,
           message: "Email already exist"
         }
       }
     }
+
+    const checkedUser = await User.findOne({username});
+    if (checkedUser) {
+      if (checkedUser.username == username) {
+        throw {
+          code: 400,
+          message: "Username already exist",
+        };
+      } 
+      }
   const encryptedPassword = hash(password)
 
   const newUser = new User({

@@ -27,7 +27,7 @@ const getPost = async (req, res, next) => {
   try {
   const posted = await Post.findById(req.params.id)
     .populate({ path: "comment" })
-    .populate("createdBy", "_id username profilePicture");
+    .populate("createdBy", "_id username profilePicture fullName");
   res.send({
     status: "success",
     message: "Success get a post",
@@ -112,7 +112,7 @@ const deletePostController = async (req, res, next) => {
 };
 const getAllPost = async (req, res, next) =>{
   try {
-   const posted = await Post.find().populate("createdBy", "_id username profilePicture");
+   const posted = await Post.find().populate("createdBy", "_id username profilePicture fullName");
    console.log(posted)
     if (!posted){
       throw{
