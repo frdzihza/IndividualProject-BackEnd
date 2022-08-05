@@ -9,7 +9,7 @@ const loginUserController = async (req, res, next) => {
     const { username, password } = req.body;
 
     const userUsername = await User.findOne({$or: [{username: username}, {email: username}]})
-    console.log(userUsername)
+    // console.log(userUsername)
 
     if (!userUsername) {
       throw {

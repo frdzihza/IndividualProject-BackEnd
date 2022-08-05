@@ -7,18 +7,19 @@ const { auth } = require("../../helpers/auth");
 
 const commentPostController = async (req, res, next) => {
   try {
-    const {comments} = req.body;
+    const {comments, post_id} = req.body;
     const newComment = new Comment({
       comments,
+      post_id,
       createdBy: req.user.userId,
     });
     const commentSaved = await newComment.save();
 
-    const post = await Post.findById(req.body.postId);
-    await post.updateOne({ $push: { comment: commentSaved } }, { new: true });
+    const post = await Post.findById(post_id);
+    await post.updateOne({ $push: { comment: commentSaved } }, { new: true })
     res.send({
       status: "Success",
-      message: "Succes Create a post",
+      message: "Succes Create a comment",
       data: commentSaved,
     });
   } catch (error) {
@@ -28,19 +29,23 @@ const commentPostController = async (req, res, next) => {
 
 const getCommentController = async (req, res, next) =>{
   try{
-  const comments = await Comment.find({ postId: req.params.id })
-      .populate("createdBy", "_id username profilePicture")
+  const commented = await Comment.find({ post_id: req.params.id })
+  .populate(
+    "createdBy",
+    "_id username profilePicture fullName"
+    );
+    console.log({post_id:req.params.id})
     res.send({
       status: "Success",
       message: "Success get a comment",
-      data: comments,
+      data: commented,
     });
   } catch (error) {
     next(error);
   }
 };
 
-router.post("/commentPost", auth, commentPostController)
+router.post("/", auth, commentPostController)
 router.get("/:id", auth, getCommentController);
 
 

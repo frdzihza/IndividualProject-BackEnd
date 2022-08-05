@@ -73,8 +73,8 @@ const postPatchController = async (req, res, next) => {
         message: "Success updating post",
       });
     } else {
-      console.log(req.body.createdBy);
-      console.log(postPatch.createdBy);
+      // console.log(req.body.createdBy);
+      // console.log(postPatch.createdBy);
       throw {
         code: 404,
         message: `Can not found the post`,
@@ -97,10 +97,10 @@ const deletePostController = async (req, res, next) => {
         message: "Success delete a post",
       });
     } else {
-      console.log(req.user);
-      console.log(req.body.createdBy);
-      console.log(req.params.id);
-      console.log(postDelete.createdBy.toString());
+      // console.log(req.user);
+      // console.log(req.body.createdBy);
+      // console.log(req.params.id);
+      // console.log(postDelete.createdBy.toString());
       throw {
         code: 404,
         message: `Can not found the post`,
@@ -113,7 +113,7 @@ const deletePostController = async (req, res, next) => {
 const getAllPost = async (req, res, next) =>{
   try {
    const posted = await Post.find().populate("createdBy", "_id username profilePicture fullName");
-   console.log(posted)
+  //  console.log(posted)
     if (!posted){
       throw{
         message: "Post not found"

@@ -9,7 +9,7 @@ const getUserProfileController = async (req, res, next) =>{
         // const { username, email} = req.user.userId;
 
         const userProfile = await User.findById(req.user.userId);
-        console.log(userProfile);
+        // console.log(userProfile);
 
         if (!userProfile) {
           throw {
