@@ -37,7 +37,10 @@ const userSchema = new mongoose.Schema(
     },
     profilePicture: {
       type: String,
-      default: "/public/avatar/profile-pict.png"
+      default: "/public/avatar/profile-pict.png",
+    },
+    userToken: {
+      type: String,
     },
   },
   {

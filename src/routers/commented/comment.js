@@ -29,16 +29,24 @@ const commentPostController = async (req, res, next) => {
 
 const getCommentController = async (req, res, next) =>{
   try{
+    let { paginate, paginatePost } = req.query;
+    const limit = paginatePost;
+    const offset = (paginate - 1) * paginatePost;
+    const commentLength = await Post.find();
   const commented = await Comment.find({ post_id: req.params.id })
   .populate(
     "createdBy",
     "_id username profilePicture fullName"
-    );
-    console.log({post_id:req.params.id})
+    )
+    .sort({ createdAt: -1 })
+    .limit(limit)
+    .skip(offset);
+    // console.log({post_id:req.params.id})
     res.send({
       status: "Success",
       message: "Success get a comment",
       data: commented,
+      length: commentLength.length
     });
   } catch (error) {
     next(error);

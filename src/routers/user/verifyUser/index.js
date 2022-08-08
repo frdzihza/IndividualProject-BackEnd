@@ -9,11 +9,22 @@ const verifyUserController = async (req, res, next) => {
   try {
     const { token } = req.params;
 
-    const verifiedToken = verifyToken(token);
+const getUserToken = await User.findOne({ userToken: token });
 
-    const verifiedUser = await User.findOneAndUpdate(verifiedToken.userId,
-      {isVerified: true}
-    )
+if (!getUserToken)
+  return res.send("<h2>your code has expired, please use the new code</h2>");
+
+    
+    const verified = verifyToken(token);
+    
+
+    const verifiedUser = await User.findByIdAndUpdate(
+       verified.userId,
+      { isVerified: true },
+      {
+        new: true,
+      }
+    );
 
     if (!verifiedUser){
       throw { message: "Verification failed" };

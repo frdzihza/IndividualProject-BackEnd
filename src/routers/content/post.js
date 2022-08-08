@@ -112,8 +112,18 @@ const deletePostController = async (req, res, next) => {
 };
 const getAllPost = async (req, res, next) =>{
   try {
-   const posted = await Post.find().populate("createdBy", "_id username profilePicture fullName");
+   let {paginate, paginatePost} = req.query
+   const limit = paginatePost
+   const offset = (paginate - 1) * paginatePost
+   const postLength = await Post.find()
+   const posted = await Post.find()
+     .populate("createdBy", "_id username profilePicture fullName")
+     .sort({ createdAt: -1 })
+     .limit(limit)
+     .skip(offset);
+
   //  console.log(posted)
+
     if (!posted){
       throw{
         message: "Post not found"
@@ -123,6 +133,7 @@ const getAllPost = async (req, res, next) =>{
       status: "Success",
       message: "Success get all post",
       data: posted,
+      length: postLength.length
     })
   }
  } catch (error) {

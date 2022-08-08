@@ -32,10 +32,10 @@ const registerUserController = async (req, res, next) => {
         message: "Enter a valid email address.",
       };
     }
-    if (!validator.isByteLength(password, 6, 10)) {
+    if (!validator.isByteLength(password, 6, 8)) {
       throw {
         code: 400,
-        message: "Password should be at least six until ten characters",
+        message: "Password should be at least six until eight characters",
       };
     }
     
@@ -68,22 +68,52 @@ const registerUserController = async (req, res, next) => {
   })
 
   const user = await newUser.save()
+  
 
-    const token = createToken({ userId: user._Id });
+    const token = createToken({ userId: user._id });
 
-    await sendMail({ email, token });
+    const getUserToken = await User.findByIdAndUpdate(
+      user._id,
+      {
+        userToken: token,
+      },
+      {
+        new: true,
+      }
+    );
+
+    await sendMail({ email, token: getUserToken.userToken });
   
   res.send({
       status: "Success",
       message: "Success create new user",
       data:{
-        result: user,
+        result: getUserToken,
       }
     });
 } catch (error) {
     next(error);
   }
 }
+const resendVerificationController = async (req, res, next) => {
+const { email, userId } = req.body;
+  const token = createToken({ userId, email });
+  const user = await User.findByIdAndUpdate(
+    userId,
+    { userToken: token },
+    {
+      new: true,
+    }
+  );
+  await sendMail({ email, token: user.userToken });
+  res.send({
+    status: "success",
+    message: "Success sending email",
+  });
+};
+
+
 router.post("/", registerUserController);
+router.post ("/verifyToken", resendVerificationController)
 
 module.exports = router;
