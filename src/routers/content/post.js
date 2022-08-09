@@ -64,7 +64,6 @@ const likePost = async (req, res, next) =>{
 
 const postPatchController = async (req, res, next) => {
   try {
-    // const {userId} = req.user.userId
     const postPatch = await Post.findById(req.params.id);
     if (postPatch.createdBy.toString() === req.user.userId) {
       await postPatch.updateOne({ $set: req.body });
@@ -73,8 +72,6 @@ const postPatchController = async (req, res, next) => {
         message: "Success updating post",
       });
     } else {
-      // console.log(req.body.createdBy);
-      // console.log(postPatch.createdBy);
       throw {
         code: 404,
         message: `Can not found the post`,
@@ -88,7 +85,6 @@ const postPatchController = async (req, res, next) => {
 
 const deletePostController = async (req, res, next) => {
   try {
-    // const {userId} = req.user.userId
     const postDelete = await Post.findById(req.params.id);
     if (postDelete.createdBy.toString() === req.user.userId) {
       await postDelete.deleteOne({ _id: req.params.id });
@@ -97,10 +93,6 @@ const deletePostController = async (req, res, next) => {
         message: "Success delete a post",
       });
     } else {
-      // console.log(req.user);
-      // console.log(req.body.createdBy);
-      // console.log(req.params.id);
-      // console.log(postDelete.createdBy.toString());
       throw {
         code: 404,
         message: `Can not found the post`,
@@ -122,7 +114,6 @@ const getAllPost = async (req, res, next) =>{
      .limit(limit)
      .skip(offset);
 
-  //  console.log(posted)
 
     if (!posted){
       throw{

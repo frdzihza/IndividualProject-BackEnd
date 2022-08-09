@@ -19,7 +19,7 @@ const sendMail = async ({ email, token }) => {
     from: "DEVELOPER TEAM <faridzihza30@gmail.com>",
     to: email,
     subject: "Please Verify Yourself",
-    html: `<h1>Halo, klik <a href="http://localhost:2104/users/verification/${token}">link</a> berikut untuk verifikasi</h1>`,
+    html: `<h1>Hello, Please Click this <a href="http://localhost:2104/users/verification/${token}">link</a> to verify</h1>`,
   };
 
   try {

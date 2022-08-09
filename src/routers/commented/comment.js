@@ -41,7 +41,6 @@ const getCommentController = async (req, res, next) =>{
     .sort({ createdAt: -1 })
     .limit(limit)
     .skip(offset);
-    // console.log({post_id:req.params.id})
     res.send({
       status: "Success",
       message: "Success get a comment",

@@ -6,10 +6,9 @@ const { uploadAvatar } = require("../../../lib/multer");
 
 const getUserProfileController = async (req, res, next) =>{
     try{
-        // const { username, email} = req.user.userId;
 
         const userProfile = await User.findById(req.user.userId);
-        // console.log(userProfile);
+
 
         if (!userProfile) {
           throw {
@@ -23,14 +22,6 @@ const getUserProfileController = async (req, res, next) =>{
           data: {
             result: 
             userProfile
-            // userId: userProfile._id,
-            // username: userProfile.username,
-            // email: userProfile.email,
-            // fullName: userProfile.fullName,
-            // profilePicture: userProfile.profilePicture
-            // firstName: userProfile.firstName,
-            // lastName: userProfile.lastName,
-            // bio: userProfile.bio
           },
         });
     }catch (error){
@@ -52,6 +43,7 @@ const userPatchProfileController = async (req, res, next) =>{
             $set: req.body,
           },
         );
+        console.log(userPatch)
 
         res.send({
           status: "success",

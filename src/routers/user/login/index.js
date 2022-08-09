@@ -7,10 +7,8 @@ const User = require("../../../models/user.js");
 const loginUserController = async (req, res, next) => {
   try {
     const { username, password} = req.body;
-    // console.log(isVerified)
 
     const userUsername = await User.findOne({$or: [{username: username}, {email: username}]})
-    // console.log(userUsername)
 
     if (!userUsername) {
       throw {
@@ -18,12 +16,6 @@ const loginUserController = async (req, res, next) => {
         message: `Can not find account with this username or email`,
       };
     }
-    
-    // if(!userUsername.isVerified){
-    //   throw{
-    //     message: "You need to verify first"
-    //   }
-    // }
 
     const isPasswordMatch = compare(password, userUsername.password);
 
